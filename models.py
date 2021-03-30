@@ -104,7 +104,7 @@ class CloseApproach:
         self.velocity = info.get('velocity', 0.0)
 
         # Create an attribute for the referenced NEO, originally None.
-        self.neo = NearEarthObject(designation= '111',name='Eros',hazardous=True) #None
+        self.neo = None
 
     @property
     def time_str(self):
