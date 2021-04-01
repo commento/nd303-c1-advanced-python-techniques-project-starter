@@ -72,6 +72,31 @@ class AttributeFilter:
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
 
+class HazardousFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.neo.hazardous
+
+class DateFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.time.date()
+
+class VelocityFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.velocity
+
+class DistanceFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.distance
+
+class DiameterFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.neo.diameter
+
 def create_filters(date=None, start_date=None, end_date=None,
                    distance_min=None, distance_max=None,
                    velocity_min=None, velocity_max=None,
@@ -107,7 +132,59 @@ def create_filters(date=None, start_date=None, end_date=None,
     :return: A collection of filters for use with `query`.
     """
     # TODO: Decide how you will represent your filters.
-    return ()
+    filterList = []
+    if date:
+        f = DateFilter(operator.eq, date)
+        filterList.append(f)
+
+    if start_date:
+        f = DateFilter(operator.ge, start_date)
+        filterList.append(f)
+
+    if end_date:
+        f = DateFilter(operator.le, end_date)
+        filterList.append(f)
+
+
+
+    if distance_min:
+        f = DistanceFilter(operator.ge, distance_min)
+        filterList.append(f)
+
+    if distance_max:
+        f = DistanceFilter(operator.le, distance_max)
+        filterList.append(f)
+
+
+
+    if velocity_min:
+        f = VelocityFilter(operator.ge, velocity_min)
+        filterList.append(f)
+
+    if velocity_max:
+        f = VelocityFilter(operator.le, velocity_max)
+        filterList.append(f)
+
+
+
+    if diameter_min:
+        f = DiameterFilter(operator.ge, diameter_min)
+        filterList.append(f)
+
+    if diameter_max:
+        f = DiameterFilter(operator.le, diameter_max)
+        filterList.append(f)
+
+
+
+    if hazardous:
+        f = HazardousFilter(operator.eq, True)
+        filterList.append(f)
+    elif hazardous == False:
+        f = HazardousFilter(operator.eq, False)
+        filterList.append(f)
+    
+    return filterList
 
 
 def limit(iterator, n=None):
@@ -120,4 +197,10 @@ def limit(iterator, n=None):
     :yield: The first (at most) `n` values from the iterator.
     """
     # TODO: Produce at most `n` values from the given iterator.
-    return iterator
+    if n is None:
+        n = 10
+    try:
+        for i in range(n):
+            yield next(iterator)
+    except StopIteration:
+        pass
