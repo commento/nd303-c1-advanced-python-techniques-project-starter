@@ -24,7 +24,8 @@ class NearEarthObject:
     """A near-Earth object (NEO).
 
     An NEO encapsulates semantic and physical parameters about the object, such
-    as its primary designation (required, unique), IAU name (optional), diameter
+    as its primary designation (required, unique), IAU name (optional),
+    diameter
     in kilometers (optional - sometimes unknown), and whether it's marked as
     potentially hazardous to Earth.
 
@@ -32,10 +33,12 @@ class NearEarthObject:
     initialized to an empty collection, but eventually populated in the
     `NEODatabase` constructor.
     """
+
     def __init__(self, **info):
         """Create a new `NearEarthObject`.
 
-        :param info: A dictionary of excess keyword arguments supplied to the constructor.
+        :param info: A dictionary of excess keyword arguments supplied to
+        the constructor.
         """
         self.designation = info.get('designation', '')
         self.name = info.get('name', None)
@@ -53,20 +56,25 @@ class NearEarthObject:
     def __str__(self):
         """Return `str(self)`."""
         if self.hazardous:
-            return f"NEO {self.designation} {self.name} has a diameter of {self.diameter:.3f} km and is potentially hazardous."
+            return f"NEO {self.designation} {self.name} has a diameter of\
+                    {self.diameter:.3f} km and is potentially hazardous."
         else:
-            return f"NEO {self.designation} {self.name} has a diameter of {self.diameter:.3f} km and is not potentially hazardous."
+            return f"NEO {self.designation} {self.name} has a diameter of\
+                    {self.diameter:.3f} km and is not potentially hazardous."
 
     def __repr__(self):
-        """Return `repr(self)`, a computer-readable string representation of this object."""
-        return (f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, "
+        """Return `repr(self)`, a computer-readable string\
+        representation of this object."""
+        return (f"NearEarthObject(designation={self.designation!r},\
+                 name={self.name!r}, "
                 f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})")
 
 
 class CloseApproach:
     """A close approach to Earth by an NEO.
 
-    A `CloseApproach` encapsulates information about the NEO's close approach to
+    A `CloseApproach` encapsulates information about the NEO's close
+    approach to
     Earth, such as the date and time (in UTC) of closest approach, the nominal
     approach distance in astronomical units, and the relative approach velocity
     in kilometers per second.
@@ -76,10 +84,12 @@ class CloseApproach:
     private attribute, but the referenced NEO is eventually replaced in the
     `NEODatabase` constructor.
     """
+
     def __init__(self, **info):
         """Create a new `CloseApproach`.
 
-        :param info: A dictionary of excess keyword arguments supplied to the constructor.
+        :param info: A dictionary of excess keyword arguments supplied
+        to the constructor.
         """
         self._designation = info.get('designation', '')
         self.time = cd_to_datetime(info.get('time', None))
@@ -91,10 +101,12 @@ class CloseApproach:
 
     @property
     def time_str(self):
-        """Return a formatted representation of this `CloseApproach`'s approach time.
+        """Return a formatted representation of this\
+        `CloseApproach`'s approach time.
 
         The value in `self.time` should be a Python `datetime` object. While a
-        `datetime` object has a string representation, the default representation
+        `datetime` object has a string representation, the default
+        representation
         includes seconds - significant figures that don't exist in our input
         data set.
 
@@ -107,11 +119,13 @@ class CloseApproach:
 
     def __str__(self):
         """Return `str(self)`."""
-        # The project instructions include one possibility. Peek at the __repr__
-        # method for examples of advanced string formatting.
-        return f"At {self.time_str}, '{self.neo.fullname}' approaches Earth at a distance of {self.distance:.2f} au and a velocity of {self.velocity:.2f} km/s."
+        return f"At {self.time_str}, '{self.neo.fullname}' approaches Earth\
+                 at a distance of {self.distance:.2f} au and a velocity of\
+                 {self.velocity:.2f} km/s."
 
     def __repr__(self):
-        """Return `repr(self)`, a computer-readable string representation of this object."""
-        return (f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, "
+        """Return `repr(self)`, a computer-readable string\
+        representation of this object."""
+        return (f"CloseApproach(time={self.time_str!r},\
+                  distance={self.distance:.2f}, "
                 f"velocity={self.velocity:.2f}, neo={self.neo!r})")
